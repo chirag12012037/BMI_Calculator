@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #212121;
+        }
+        .container {
+            background: #fff;
+            padding: 50px;
+            padding-right: 70px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            text-indent: 10px;
+        }
+        button {
+            background-color: #4c7caf;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        canvas {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <input type="number" id="weight" placeholder="Enter weight in kg">
+        <input type="number" id="height" placeholder="Enter height in meters">
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        <canvas id="bmiCanvas" width="300" height="200"></canvas>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const canvas = document.getElementById('bmiCanvas');
+            const ctx = canvas.getContext('2d');
+
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                alert('Please enter valid weight and height values.');
+                return;
+            }
+
+            const bmi = (weight / (height * height)).toFixed(2);
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the BMI text
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText(`Your BMI: ${bmi}`, 10, 30);
+
+            // Determine BMI category
+            let category = '';
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                ctx.fillStyle = 'blue';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal weight';
+                ctx.fillStyle = 'green';
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                ctx.fillStyle = 'orange';
+            } else {
+                category = 'Obesity';
+                ctx.fillStyle = 'red';
+            }
+
+            // Draw the category text
+            ctx.fillText(`Category: ${category}`, 10, 60);
+
+            // Draw a rectangle representing BMI visually
+            ctx.fillRect(10, 80, bmi * 5, 20);
+        }
+    </script>
+</body>
+</html>
